@@ -53,7 +53,6 @@
 								<td style="width: 80px" class="text-right">特殊售价</td>
 								<!-- <td style="width: 200px">商品详情</td> -->
 								<td style="width: 100px">创建时间</td>
-								<td style="width: 100px">特价时间</td>
 								<td style="width: 80px">销售量</td>
 								<td style="width: 80px">库存</td>
 								<td style="width: 80px">操作</td>
@@ -71,9 +70,6 @@
 											value="${pro.sale_price}" pattern="￥#,##0.00" /></td>
 									<td class="text-center"><fmt:formatDate
 											value="${pro.create_time}" pattern="yyyy-MM-dd HH:mm" />
-									</td>
-									<td class="text-center"><fmt:formatDate
-											value="${pro.sale_time}" pattern="yyyy-MM-dd HH:mm" />
 									</td>
 									<td class="text-center">${pro.sales_volume}</td>
 									<td class="text-center">${pro.inventory}</td>
