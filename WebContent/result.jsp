@@ -15,11 +15,6 @@
 
 	<!-- 商品列表 -->
 	<div class="wrapper" style="min-height: 500px">
-		<!-- 面包屑导航 -->
-		<ol class="breadcrumb">
-			<li><span class="breadcrumb-title">搜索关键字：</span>
-				${param.keyword}</li>
-		</ol>
 
 		<!-- 列表开始 -->
 		<div class="list">

@@ -6,11 +6,11 @@
 <html lang="zh-cn">
 <head>
 <jsp:include page="/meta.jsp" />
-<title>后台管理</title>
+<title>修改商品</title>
 <jsp:include page="/link.jsp" />
 </head>
 <body>
-	<jsp:include page="/administrator_top.jsp"></jsp:include>
+	<jsp:include page="/top.jsp"></jsp:include>
 
 	<!-- 主内容 -->
 	<div class="wrapper" style="min-height: 530px">
@@ -32,7 +32,7 @@
 						<strong> 商品管理</strong>
 					</div>
 					<div class="col-xs-4" id="search">
-						<form id="userAction_save_do" action="${ctx}/administrator/alterOne?id=${product.id}" method="post" enctype="multipart/form-data" name="Form1">
+						<form id="userAction_save_do" action="${ctx}/administrator/alterOne?id=${product.id}&thumbnail=${product.thumbnail}&create_time=${product.create_time}&sales_volume=${product.sales_volume}" method="post" enctype="multipart/form-data" name="Form1">
 							&nbsp;
 							<table cellSpacing="1" cellPadding="5" width="100%" align="center">
 								<tr>
@@ -58,7 +58,7 @@
 								<tr>
 									<td width="30%" align="center">库存</td>
 									<td>
-										<input type="text" name="inventory" value="${product.inventory}" id="userAction_save_do_volume"/>
+										<input type="text" name="inventory" value="${product.inventory}" id="userAction_save_do_inventory"/>
 									</td>
 									<!-- <td width="30%" align="center">特价时间</td>
 									<td>
@@ -68,7 +68,7 @@
 								<tr>
 									<td width="30%" align="center">图片</td>
 									<td>
-										<input type="file" name="thumbnail" value="" id="userAction_save_do_image"/>
+										<input type="file" name="thumbnail" value="${product.thumbnail}" id="userAction_save_do_image"/>
 									</td>
 								</tr>
 								<tr>

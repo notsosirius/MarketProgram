@@ -789,4 +789,32 @@ public class OrdersService {
 		}
 		return real;
 	}
+
+	public Page<Orders> salerFindAll(int number, int size, int cateId) {
+		Page<Orders> page = new Page<>(number, size);
+		
+		String sql = "SELECT COUNT(id) FROM orders ";
+		String sql2 = "SELECT * FROM orders ORDER BY id DESC LIMIT ?,?";
+
+		Connection conn = null;
+		try{
+			conn = DbHelper.getConn();
+			
+			Long temp = qr.query(conn, sql, scalarHandler);
+			if(temp != null && temp.longValue() > 0){
+				page.setTotalElements(temp.longValue());
+				
+				Object[] params = {Integer.valueOf((number - 1) * size),
+						Integer.valueOf(size)};
+				
+				List<Orders> list = qr.query(conn, sql2, beanListHandler, params);
+				page.setItems(list);
+			}
+		}catch(Exception e){
+			throw new RuntimeException(e);
+		}finally{
+			DbUtils.closeQuietly(conn);
+		}
+		return page;
+	}
 }

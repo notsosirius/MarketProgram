@@ -15,7 +15,7 @@ public class Administrator implements Serializable{
 	private String mobile;
 	private String pwd;
 	private String real_name;
-	private String email;//这个当主码
+	private String email;
 	private Date register_time;
 	
 	public Integer getId() {
@@ -56,7 +56,7 @@ public class Administrator implements Serializable{
 	}
 	@Override
 	public String toString() {
-		return "Member [id=" + id + ", mobile=" + mobile + ", pwd=" + pwd + ", real_name=" + real_name + ", email=" + email + ", register_time=" + register_time + "]";
+		return "Administrator [id=" + id + ", mobile=" + mobile + ", pwd=" + pwd + ", real_name=" + real_name + ", email=" + email + ", register_time=" + register_time + "]";
 	}
 }
 

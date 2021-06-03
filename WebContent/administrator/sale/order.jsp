@@ -6,11 +6,11 @@
 <html lang="zh-cn">
 <head>
 <jsp:include page="/meta.jsp" />
-<title>会员首页</title>
+<title>订单列表</title>
 <jsp:include page="/link.jsp" />
 </head>
 <body>
-	<jsp:include page="/administrator_top.jsp"></jsp:include>
+	<jsp:include page="/top.jsp"></jsp:include>
 
 	<!-- 主内容 -->
 	<div class="wrapper" style="min-height: 530px">
@@ -29,30 +29,32 @@
 			<div class="col-xs-10">
 				<div class="panel">
 					<div class="panel-heading">
-						<strong><i class="icon-shopping-cart"> </i>订单列表</strong>
+						<strong><i class="icon-dollar"> </i>订单列表</strong>
 					</div>
 					<table class="table table-hover table-striped tablesorter">
 						<thead>
 							<tr class="text-center">
 								<td style="width: 60px">ID</td>
-								<td class="text-left">商品信息</td>
-								<td style="width: 80px">数量</td>
-								<td style="width: 80px" class="text-right">金额</td>
+								<!-- <td class="text-left">商品信息</td> -->
+								<!-- <td style="width: 80px">数量</td> -->
+								<td style="width: 80px">金额</td>
 								<td style="width: 200px">订单跟踪</td>
 								<td style="width: 60px">状态</td>
-								<td style="width: 100px">买家留言</td>
+								<!-- <td style="width: 100px">买家留言</td> -->
 								<td style="width: 100px">买家账号</td>
-								<td style="width: 100px">收货人</td>
+								<!-- <td style="width: 100px">收货人</td>
 								<td style="width: 100px">收货电话</td>
-								<td style="width: 100px">收货地址</td>
+								<td style="width: 100px">收货地址</td> -->
 								<td style="width: 120px">操作</td>
 							</tr>
 						</thead>
 						<tbody>
 							<c:forEach items="${page.items}" var="ord">
 								<tr>
-									<td class="text-center">${ord.id}</td>
-									<td class="text-left">
+									<td class="text-center">
+										<a href="${ctx}/OrderDetailServlet?id=${ord.id}">${ord.id}</a>
+									</td>
+									<%-- <td class="text-left">
 										<c:forEach items="${ord.items}"
 											var="item" varStatus="vs">
 											<c:if test="${vs.index >0}">
@@ -60,9 +62,9 @@
 											</c:if>
 											<a href="${ctx}/product_detail?id=${item.product.id}">${item.product.name}</a> x ${item.amount}
 										</c:forEach>
-									</td>
-									<td class="text-center">${ord.total_amount}</td>
-									<td class="text-right"><fmt:formatNumber
+									</td> --%>
+									<%-- <td class="text-center">${ord.total_amount}</td> --%>
+									<td class="text-center"><fmt:formatNumber
 											value="${ord.payment_price}" pattern="￥#,##0.00" /></td>
 									<td class="text-center">下单时间：<fmt:formatDate
 											value="${ord.create_time}" pattern="yyyy-MM-dd HH:mm" /> <c:if
@@ -84,11 +86,11 @@
 											<c:when test="${ord.status==-1}">已取消</c:when>
 										</c:choose>
 									</td>
-									<td class="text-right">${ord.remark}</td>
-									<td class="text-right">${ord.buyer_id}</td>
-									<td class="text-right">${ord.contact}</td>
+									<%-- <td class="text-center">${ord.remark}</td> --%>
+									<td class="text-center">${ord.buyer_id}</td>
+									<%-- <td class="text-right">${ord.contact}</td>
 									<td class="text-right">${ord.mobile}</td>
-									<td class="text-right">${ord.street}</td>
+									<td class="text-right">${ord.street}</td> --%>
 									<td class="text-center">
 										<c:if test="${ord.status==2}" var="flag">
 											<a href="${ctx}/administrator/sale/order/deliver?id=${ord.id}">发货</a>

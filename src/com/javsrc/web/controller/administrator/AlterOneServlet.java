@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -67,10 +68,13 @@ public class AlterOneServlet extends HttpServlet {
 					}
 				}
 			}
-			
+			SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 			BeanUtils.populate(product,map);
-			//product.setSales_volume(0);
-			//product.setCreate_time(new Date());
+			Integer sales_volume=Integer.parseInt(request.getParameter("sales_volume"));
+			System.out.println(sales_volume);
+			product.setSales_volume(sales_volume);
+			product.setCreate_time(format.parse(request.getParameter("create_time").replace(".0","")));
+			product.setThumbnail(request.getParameter("thumbnail"));
 			ProductService service=new ProductService();
 			service.update(product);
 			request.getRequestDispatcher("/administrator/product/alter.jsp").forward(request, response);

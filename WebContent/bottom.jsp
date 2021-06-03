@@ -4,7 +4,7 @@
 <div id="footer" style="background-color:#ff9000">
 	<div class="wrapper" style="color:#ffffff">
 		<span>华南理工大学2018网络工程</span>
-		<div class="pull-right">陈映衡网络应用开发大作业</div>
+		<div class="pull-right">陈映衡网络应用开发课程设计</div>
 	</div>
 </div>
 <!-- /底部 -->

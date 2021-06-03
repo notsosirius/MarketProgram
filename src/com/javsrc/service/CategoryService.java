@@ -1,6 +1,9 @@
 package com.javsrc.service;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -12,14 +15,19 @@ import org.apache.commons.dbutils.handlers.BeanListHandler;
 import org.apache.commons.dbutils.handlers.ScalarHandler;
 
 import com.javsrc.common.DbHelper;
+import com.javsrc.entity.Address;
 import com.javsrc.entity.Category;
 
 
 public class CategoryService {
 	private QueryRunner qr = new QueryRunner();
+	private ScalarHandler<Double> doubleScalarHandler = new ScalarHandler<Double>();
 	private ScalarHandler<Long> scalarHandler = new ScalarHandler<Long>();
+	private ScalarHandler<Integer> intScalarHandler = new ScalarHandler<Integer>();
 	private BeanHandler<Category> beanHandler = new BeanHandler<Category>(Category.class);
 	private BeanListHandler<Category> beanListHandler = new BeanListHandler<Category>(Category.class);
+	//private BeanListHandler<String> stringBeanListHandler = new BeanListHandler<String>(String.class);
+	//private BeanHandler<Integer> intBeanHandler = new BeanHandler<Integer>(Integer.class);
 
 	public Category save(Category cate) throws RuntimeException{
 		String sql = "INSERT INTO category(name, alias, order_weight, p_id) VALUES(?,?,?,?)";
@@ -111,6 +119,32 @@ public class CategoryService {
 		return list;
 	}
 	
+	public List<Category> findAllSub()throws RuntimeException{
+		List<Category> list = new ArrayList<Category>();
+		String sql = "SELECT * FROM category WHERE id>7 ORDER BY order_weight DESC,id ASC";
+
+		Connection conn = null;
+		try{
+			conn = DbHelper.getConn();
+			
+			System.out.println(sql);
+			//执行数据库的查询操作
+			list = qr.query(conn, sql, beanListHandler);
+			
+			//list = convert(list);
+			
+		}catch(Exception e){
+			throw new RuntimeException(e);
+		}finally{
+			DbUtils.closeQuietly(conn);
+		}
+		/*
+		 * List<String>cateList=new ArrayList<String>(); for(Category cate:list) {
+		 * cateList.add(cate.getName()); }
+		 */
+		return list;
+	}
+	
 
 	public void delete(Integer id) throws RuntimeException{
 		String sql = "SELECT count(id) FROM category where p_id=?";
@@ -157,6 +191,148 @@ public class CategoryService {
 		}
 		
 		return parents;
+	}
+	
+	
+	
+	public Double getRevenueByName(String name) throws RuntimeException{
+		String sql = "SELECT SUM(payment_price) FROM `item` , `category` , `product`  WHERE `item`.`product_id`=`product`.`id` AND `product`.`cate_id`=`category`.`id` AND `category`.`name` = ?";
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		Double whole=0.0;
+		//Object[] params = {name};
+		//String whole;
+		Connection conn = null;
+		try{
+			conn = DbHelper.getConn();
+			//Double whole=qr.query(conn, sql, doubleScalarHandler, name);
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setObject(1, name);
+			rs = pstmt.executeQuery();
+			if(rs.next()) {
+				whole=rs.getDouble(1);
+			}
+			pstmt.close();
+			conn.close();
+		}catch(Exception e){
+			 DbUtils.rollbackAndCloseQuietly(conn); //回滚事务并关闭连接
+			 
+			 throw new RuntimeException(e);
+		}
+		return whole;
+	}
+
+	@Override
+	public String toString() {
+		return "CategoryService [qr=" + qr + ", scalarHandler=" + scalarHandler + ", intScalarHandler="
+				+ intScalarHandler + ", beanHandler=" + beanHandler + ", beanListHandler=" + beanListHandler + "]";
+	}
+
+	public Integer getIdByName(String name) {
+		String sql = "SELECT id FROM `category`  WHERE `category`.`name`= ?";
+		
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		Integer id=0;
+		Connection conn = null;
+		try{
+			conn = DbHelper.getConn();
+			//Double whole=qr.query(conn, sql, doubleScalarHandler, name);
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setObject(1, name);
+			rs = pstmt.executeQuery();
+			if(rs.next()) {
+				id=rs.getInt(1);
+			}
+			pstmt.close();
+			conn.close();
+		}catch(Exception e){
+			 DbUtils.rollbackAndCloseQuietly(conn); //回滚事务并关闭连接
+			 
+			 throw new RuntimeException(e);
+		}
+		return id;
+	}
+
+	public Double getRevenueByCondition(String cate,Timestamp startTime,Timestamp endTime) {
+		String sql = "SELECT SUM(`item`.`payment_price`) FROM `item` , `category` , `product` , `orders`  WHERE `item`.`order_id` = `orders`.`id` AND `item`.`product_id`=`product`.`id` AND `product`.`cate_id`=`category`.`id` AND `category`.`name` = ? AND `orders`.`create_time` > ? AND `orders`.`create_time` < ?";
+		
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		Double whole=0.0;
+		Connection conn = null;
+		try{
+			conn = DbHelper.getConn();
+			//Double whole=qr.query(conn, sql, doubleScalarHandler, name);
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setObject(1, cate);
+			pstmt.setObject(2, startTime);
+			pstmt.setObject(3, endTime);
+			rs = pstmt.executeQuery();
+			if(rs.next()) {
+				whole=rs.getDouble(1);
+			}
+			pstmt.close();
+			conn.close();
+		}catch(Exception e){
+			 DbUtils.rollbackAndCloseQuietly(conn); //回滚事务并关闭连接
+			 
+			 throw new RuntimeException(e);
+		}
+		return whole;
+	}
+
+	public Double getRevenueById(int cate) {
+		String sql = "SELECT SUM(payment_price) FROM `item` , `category` , `product`  WHERE `item`.`product_id`=`product`.`id` AND `product`.`cate_id`=`category`.`id` AND `category`.`id` = ?";
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		Double whole=0.0;
+		//Object[] params = {name};
+		//String whole;
+		Connection conn = null;
+		try{
+			conn = DbHelper.getConn();
+			//Double whole=qr.query(conn, sql, doubleScalarHandler, name);
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setObject(1, cate);
+			rs = pstmt.executeQuery();
+			if(rs.next()) {
+				whole=rs.getDouble(1);
+			}
+			pstmt.close();
+			conn.close();
+		}catch(Exception e){
+			 DbUtils.rollbackAndCloseQuietly(conn); //回滚事务并关闭连接
+			 
+			 throw new RuntimeException(e);
+		}
+		return whole;
+	}
+
+	public String getNameById(int cateId) {
+		String sql = "SELECT name FROM `category`  WHERE `category`.`id`= ?";
+		
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		String name = null;
+		Connection conn = null;
+		try{
+			conn = DbHelper.getConn();
+			//Double whole=qr.query(conn, sql, doubleScalarHandler, name);
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setObject(1, cateId);
+			rs = pstmt.executeQuery();
+			if(rs.next()) {
+				name=rs.getString(1);
+			}
+			pstmt.close();
+			conn.close();
+		}catch(Exception e){
+			 DbUtils.rollbackAndCloseQuietly(conn); //回滚事务并关闭连接
+			 
+			 throw new RuntimeException(e);
+		}
+		return name;
 	}
 	
 }

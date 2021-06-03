@@ -6,11 +6,11 @@
 <html lang="zh-cn">
 <head>
 <jsp:include page="/meta.jsp" />
-<title>后台管理</title>
+<title>商品列表</title>
 <jsp:include page="/link.jsp" />
 </head>
 <body>
-	<jsp:include page="/administrator_top.jsp"></jsp:include>
+	<jsp:include page="/top.jsp"></jsp:include>
 
 	<!-- 主内容 -->
 	<div class="wrapper" style="min-height: 530px">

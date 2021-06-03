@@ -6,7 +6,7 @@
 	<!-- 工具条 -->
 	<div id="toolbar">
 		<div class="wrapper row">
-			<c:if test="${!empty sessionScope.curr_mbr}" var="flag">
+			<c:if test="${!empty sessionScope.curr_mbr and sessionScope.curr_mbr_cate==0}" var="flag">
 				<div id="welcome" class="col-xs-5"><a>欢迎用户</a>${sessionScope.curr_mbr.id}</div>
 				<div class="col-xs-4"></div>
 				<div class="col-xs-3" style="text-align: right;">
@@ -14,7 +14,23 @@
 						href="${ctx}/member/logout">退出</a>
 				</div>
 			</c:if>
-			<c:if test="${!flag}">
+			<c:if test="${!empty sessionScope.curr_mbr and sessionScope.curr_mbr_cate==1}" var="flag">
+				<div id="welcome" class="col-xs-5"><a>你好，管理员</a>${sessionScope.curr_mbr.id}</div>
+				<div class="col-xs-4"></div>
+				<div class="col-xs-3" style="text-align: right;">
+					<a href="${ctx}/administrator/products">后台管理</a> <a
+						href="${ctx}/administrator/logout">退出</a>
+				</div>
+			</c:if>
+			<c:if test="${!empty sessionScope.curr_mbr and sessionScope.curr_mbr_cate==2}" var="flag">
+				<div id="welcome" class="col-xs-5"><a>你好，销售员</a>${sessionScope.curr_mbr.id}</div>
+				<div class="col-xs-4"></div>
+				<div class="col-xs-3" style="text-align: right;">
+					<a href="${ctx}/saler/products">后台管理</a> <a
+						href="${ctx}/saler/logout">退出</a>
+				</div>
+			</c:if>
+			<c:if test="${empty sessionScope.curr_mbr}">
 				<div class="col-xs-5">演示系统</div>
 				<div class="col-xs-4"></div>
 				<div class="col-xs-3" style="text-align: right;">

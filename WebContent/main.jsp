@@ -98,7 +98,7 @@
 		</div>
 
 		<!-- 第二行 -->
-		<div class="list">
+		<%-- <div class="list">
 			<header style="border: 0">
 				<strong><i class="icon-tablet" style="color: #ff8000"></i>
 					热门手机</strong>
@@ -121,11 +121,11 @@
 					</div>
 				</c:forEach>
 			</section>
-		</div>
+		</div> --%>
 		<!-- /第2行 -->
 
 		<!-- 第3行 -->
-		<div class="list" style="border: 0">
+		<%-- <div class="list" style="border: 0">
 			<header>
 				<strong><i class="icon-desktop" style="color: #ff8000"></i>
 					电脑办公</strong>
@@ -149,7 +149,7 @@
 				</c:forEach>
 
 			</section>
-		</div>
+		</div> --%>
 		<!-- /第3行 -->
 		<!-- 广告 -->
 		<%-- <div class="list">

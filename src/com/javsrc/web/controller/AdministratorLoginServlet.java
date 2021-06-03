@@ -2,6 +2,7 @@ package com.javsrc.web.controller;
 
 import java.io.IOException;
 //import java.util.List;
+import java.util.Date;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -11,9 +12,11 @@ import javax.servlet.http.HttpServletResponse;
 
 //import com.javsrc.entity.Product;
 import com.javsrc.entity.Administrator;
+import com.javsrc.entity.SessionInfo;
 //import com.javsrc.entity.Orders;
 //import com.javsrc.service.AddressService;
 import com.javsrc.service.AdministratorService;
+import com.javsrc.web.listener.SessionListener;
 
 /**
  * 处理会员登录的Servlet
@@ -49,6 +52,17 @@ public class AdministratorLoginServlet extends HttpServlet {
 				//登录成功
 				//在会话中记录当前登录的会员信息
 				request.getSession().setAttribute("curr_mbr", mbr);
+				request.getSession().setAttribute("curr_mbr_cate",1);
+				SessionInfo sessionInfo=new SessionInfo();
+				sessionInfo.setUser_cate(1);
+				sessionInfo.setEmail(mbr.getEmail());
+				sessionInfo.setMobile(mbr.getMobile());
+				sessionInfo.setIp(request.getRemoteAddr());
+				sessionInfo.setTime(new Date());
+				sessionInfo.setOperation("登录");
+				sessionInfo.setUser_id(mbr.getId());
+				SessionListener sessionListener=new SessionListener(sessionInfo);  //对于每一个会话过程均启动一个监听器
+				request.getSession().setAttribute("listener",sessionListener);  //将监听器植入HttpSession，这将激发监听器调用valueBound方法，从而记录日志文件。
 				//显示商品列表
 				response.sendRedirect(request.getContextPath() + "/administrator/products");
 				

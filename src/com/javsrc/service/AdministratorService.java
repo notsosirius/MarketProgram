@@ -16,7 +16,7 @@ import com.javsrc.entity.Administrator;
 import com.javsrc.entity.common.Page;
 
 /**
- * 会员相关的业务逻辑类---->CRUD操作
+ * 管理员相关的业务逻辑类---->CRUD操作
  */
 public class AdministratorService {
 
@@ -31,7 +31,7 @@ public class AdministratorService {
 	
 	/**
 	 * 新增一个管理员 
-	 * @param member 要新增的管理员对象
+	 * @param administrator 要新增的管理员对象
 	 * @return 新增成功后的管理员对象
 	 */
 	public Administrator save(Administrator member){

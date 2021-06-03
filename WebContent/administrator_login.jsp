@@ -47,6 +47,7 @@
 							</form>
 						</div>
 					</div>
+					<a href="saler_login.jsp">点此切换至销售员入口</a>
 				</div>
 
 				<div class="col-xs-3"></div>

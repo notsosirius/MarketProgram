@@ -433,6 +433,44 @@ public class ProductService {
 		return page;
 	}
 	
+	public Page<Product> salerFindByLikeName(String name, int cate, int number, int size) throws RuntimeException{
+		Page<Product> page = new Page<>(number, size);
+		
+		if(name != null){
+			name = name.replaceAll("%", "\\%");
+		}
+		System.out.println(name);
+		System.out.println(cate);
+		
+		String sql = "SELECT COUNT(id) FROM product WHERE name LIKE ? AND cate_id=?";
+		String sql2 = "SELECT * FROM product WHERE name LIKE ? AND cate_id=? ORDER BY id DESC LIMIT ?,?";
+
+		Connection conn = null;
+		try{
+			conn = DbHelper.getConn();
+			Object[] sqlparams = {"%" + name + "%",
+					cate};
+			Long temp = qr.query(conn, sql, scalarHandler, sqlparams);
+			System.out.println(temp);
+			if(temp != null && temp.longValue() > 0){
+				page.setTotalElements(temp.longValue());
+				
+				Object[] params = {"%" + name + "%",
+						cate,
+						Integer.valueOf((number - 1) * size),
+						Integer.valueOf(size)};
+				
+				List<Product> list = qr.query(conn, sql2, beanListHandler, params);
+				page.setItems(list);
+			}
+		}catch(Exception e){
+			throw new RuntimeException(e);
+		}finally{
+			DbUtils.closeQuietly(conn);
+		}
+		return page;
+	}
+	
 	/**
 	 * 获取指定一级类目下的所有产品分页列表
 	 * @param cate_id
@@ -461,6 +499,34 @@ public class ProductService {
 				
 				Object[] params = {cate_id,
 						Integer.valueOf((number - 1) * size),
+						Integer.valueOf(size)};
+				
+				List<Product> list = qr.query(conn, sql2, beanListHandler, params);
+				page.setItems(list);
+			}
+		}catch(Exception e){
+			throw new RuntimeException(e);
+		}finally{
+			DbUtils.closeQuietly(conn);
+		}
+		return page;
+	}
+
+	public Page<Product> findAllByCate(int number, int size, int category) {
+		Page<Product> page = new Page<>(number, size);
+		
+		String sql = "SELECT COUNT(id) FROM product WHERE cate_id=?";
+		String sql2 = "SELECT * FROM product WHERE cate_id=? ORDER BY id DESC LIMIT ?,?";
+
+		Connection conn = null;
+		try{
+			conn = DbHelper.getConn();
+			
+			Long temp = qr.query(conn, sql, scalarHandler,category);
+			if(temp != null && temp.longValue() > 0){
+				page.setTotalElements(temp.longValue());
+				
+				Object[] params = {category, Integer.valueOf((number - 1) * size),
 						Integer.valueOf(size)};
 				
 				List<Product> list = qr.query(conn, sql2, beanListHandler, params);

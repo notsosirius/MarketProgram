@@ -24,7 +24,7 @@
 				<div class="col-xs-6" style="padding: 30px 60px">
 					<div class="panel" style="border: none;">
 						<div class="panel-heading" style="background: none;">
-							<strong>请注册您的管理员身份</strong>
+							<strong>请注册您的管理员账号</strong>
 						</div>
 						<div class="panel-body">
 							<form action="${ctx}/administrator_register" method="post">
